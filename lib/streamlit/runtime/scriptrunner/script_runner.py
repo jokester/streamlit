@@ -227,6 +227,7 @@ class ScriptRunner:
         self._fragment_storage = fragment_storage
 
         self._pages_manager = pages_manager
+        # _requests is only created once
         self._requests = ScriptRequests()
         self._requests.request_rerun(initial_rerun_data)
 
@@ -337,7 +338,7 @@ class ScriptRunner:
         return ctx
 
     def _run_script_thread(self) -> None:
-        """The entry point for the script thread.
+        """The **entry point** for the script thread.
 
         Processes the ScriptRequestQueue, which will at least contain the RERUN
         request that will trigger the first script-run.
@@ -352,7 +353,7 @@ class ScriptRunner:
 
         _LOGGER.debug("Beginning script thread")
 
-        # Create and attach the thread's ScriptRunContext
+        # Create and attach the thread's ScriptRunContext (not saving its reference)
         ctx = ScriptRunContext(
             session_id=self._session_id,
             _enqueue=self._enqueue_forward_msg,
