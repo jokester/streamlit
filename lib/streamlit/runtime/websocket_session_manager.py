@@ -98,6 +98,7 @@ class WebsocketSessionManager(SessionManager):
 
             return existing_session.id
 
+        # create new AppSession and let it loop
         session = AppSession(
             script_data=script_data,
             uploaded_file_manager=self._uploaded_file_mgr,

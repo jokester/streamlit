@@ -157,13 +157,15 @@ def _coalesce_widget_states(
 class ScriptRequests:
     """An interface for communicating with a ScriptRunner. Thread-safe.
 
-    AppSession makes requests of a ScriptRunner through this class, and
-    ScriptRunner handles those requests.
+    AppSession (producer) makes requests of a ScriptRunner through this class, and
+    ScriptRunner (consumer) handles those requests.
     """
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
+        # (_state, _rerun_data) is a tuple that represents the current state
         self._state = ScriptRequestType.CONTINUE
+        # effectively a queue of length 1
         self._rerun_data = RerunData()
 
     def request_stop(self) -> None:
@@ -249,6 +251,8 @@ class ScriptRequests:
 
     def on_scriptrunner_yield(self) -> ScriptRequest | None:
         """Called by the ScriptRunner when it's at a yield point.
+
+        NOTE a yield point is where a ForwardMsg is queued. Mostly when a st.* api is called.
 
         If we have no request or a RERUN request corresponding to one or more fragments
         (that is not a fragment-scoped rerun), return None.

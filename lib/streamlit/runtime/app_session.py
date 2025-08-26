@@ -409,6 +409,7 @@ class AppSession:
                 # handle the rerun immediately.
                 self._scriptrunner.request_stop()
                 self._scriptrunner = None
+                # continue to create a new ScriptRunner
             else:
                 # Either fastReruns is not enabled or this RERUN request is a request to
                 # run a fragment. We send our current ScriptRunner a rerun request, and
@@ -420,7 +421,8 @@ class AppSession:
         # If we are here, then either we have no ScriptRunner, or our
         # current ScriptRunner is shutting down and cannot handle a rerun
         # request - so we'll create and start a new ScriptRunner.
-        self._create_scriptrunner(rerun_data)
+        # NOTE this is the only callsite to _create_scriptrunner
+        self._create_scriptrunner(initial_rerun_data=rerun_data)
 
     def request_script_stop(self) -> None:
         """Request that the scriptrunner stop execution.
@@ -447,6 +449,7 @@ class AppSession:
             fragment_storage=self._fragment_storage,
             pages_manager=self._pages_manager,
         )
+        # subscribe to events from inside Script Thread
         self._scriptrunner.on_event.connect(self._on_scriptrunner_event)
         self._scriptrunner.start()
 

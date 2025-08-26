@@ -155,6 +155,7 @@ class BrowserWebSocketHandler(WebSocketHandler, SessionClient):
         return None
 
     def open(self, *args: Any, **kwargs: Any) -> Awaitable[None] | None:
+        # WS handler that creates and connects to a new AppSession.
         user_info: dict[str, str | bool | None] = {}
 
         existing_session_id = None
