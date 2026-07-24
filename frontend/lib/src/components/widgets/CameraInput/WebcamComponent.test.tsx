@@ -28,6 +28,7 @@ vi.mock("react-webcam")
 vi.mock("~lib/util/isMobile", () => {
   return {
     isMobile: () => true,
+    isMobileOrTablet: () => true,
   }
 })
 

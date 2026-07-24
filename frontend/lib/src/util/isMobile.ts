@@ -28,3 +28,16 @@ export function isMobile(): boolean {
   const result = parser.getResult()
   return result.device.type === "mobile"
 }
+
+/**
+ * Utilizes user agent to determine if the user is on a mobile or tablet device.
+ * Tablets typically also have front- and back-facing cameras, so this is used
+ * where behavior should apply to both device classes.
+ * Note: This is a simple heuristic and may not be 100% accurate.
+ *
+ * @returns true if the user is on a mobile or tablet device, false otherwise
+ */
+export function isMobileOrTablet(): boolean {
+  const result = parser.getResult()
+  return result.device.type === "mobile" || result.device.type === "tablet"
+}

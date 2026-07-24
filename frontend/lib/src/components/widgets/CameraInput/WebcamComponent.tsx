@@ -31,7 +31,7 @@ import Icon from "~lib/components/shared/Icon/Icon"
 import { useEmotionTheme } from "~lib/hooks/useEmotionTheme"
 import themeColors from "~lib/theme/emotionBaseTheme/themeColors"
 import { CAMERA_PERMISSION_URL } from "~lib/urls"
-import { isMobile } from "~lib/util/isMobile"
+import { isMobileOrTablet } from "~lib/util/isMobile"
 import { debounce, isNullOrUndefined } from "~lib/util/utils"
 
 import CameraInputButton from "./CameraInputButton"
@@ -149,7 +149,7 @@ const WebcamComponent = ({
       !clearPhotoInProgress ? (
         <AskForCameraPermission width={debouncedWidth} />
       ) : (
-        isMobile() && (
+        isMobileOrTablet() && (
           <SwitchFacingModeButton switchFacingMode={setFacingMode} />
         )
       )}
